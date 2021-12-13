@@ -1,16 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useActions } from '../hooks';
 import Loader from 'react-loader-spinner';
+import { TableData } from '../state/reducers/stringReducer';
 
 const TableItem: React.FC = () => {
   const { fetchStrings } = useActions();
   const { data, error, loading } = useSelector((state) => state.trivial);
+  const [fetchedData, setFetchedData] = useState<TableData[]>([]);
 
   useEffect(() => {
-    fetchStrings();
+    if (data.length > fetchedData.length) {
+      setFetchedData(data);
+    }
+  }, [data.length]);
+
+  useEffect(() => {
+    const interval = setInterval(fetchStrings, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
-  if (loading) {
+  if (loading && !fetchedData.length) {
     return (
       <div className='text-center'>
         <Loader type='ThreeDots' color='#00BFFF' height={20} width={20} />
@@ -20,7 +32,7 @@ const TableItem: React.FC = () => {
 
   return (
     <div className='col-10 offset-md-1'>
-      {!error && !loading ? (
+      {!error ? (
         <table className='table table-striped'>
           <thead>
             <tr>
@@ -30,8 +42,8 @@ const TableItem: React.FC = () => {
               <th scope='col'>Created Date</th>
             </tr>
           </thead>
-          {data.length
-            ? data.map((item) => {
+          {fetchedData.length
+            ? fetchedData.map((item) => {
                 return (
                   <tbody key={item.id}>
                     <tr>
