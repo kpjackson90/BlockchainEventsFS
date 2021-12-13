@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useActions } from '../hooks';
 import Loader from 'react-loader-spinner';
 
