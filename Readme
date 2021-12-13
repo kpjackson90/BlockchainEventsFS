@@ -1,0 +1,23 @@
+Trivial String Test Project
+
+- This project has 4 main components
+
+1. Server
+2. Client
+3. Ethereum
+4. Nginx
+
+Run docker-compose up to run entire project
+
+Smart contract is deployed using the Kovan test network on Infura.
+
+Required Updates:-
+
+1. Remove hard coded values in ethereum project and add them to environment variables
+2. Write automated tests for client and server
+3. Update Smart Contract tests to include event emission
+4. Automate contract deployment and getting abi information
+5. Setup Swagger for backend api
+6. Remove hard coded gas value and allow user to input gas value
+
+I left variables in the test repo incase you want to try running to project.

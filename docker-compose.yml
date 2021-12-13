@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '80:80'
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    volumes:
+      - .:/usr/app
+    environment:
+      NODE_ENV: 'development'
+      MONGO_URI: 'mongodb://mongo/decent-db'
+      WEB3_PROVIDER: 'https://kovan.infura.io/v3/1becc4faf5724a03a11877a6a40b7fe1'
+      ADDRESS: '0x8267f954D179116557FF02B72c8dB716C0123C32'
+      CONTRACT_NAME: 'TrivialString'
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    environment:
+      REACT_APP_PROVIDER: 'https://kovan.infura.io/v3/1becc4faf5724a03a11877a6a40b7fe1'
+      REACT_APP_ADDRESS: '0x8267f954D179116557FF02B72c8dB716C0123C32'
